@@ -20,16 +20,14 @@ const loginsSchema={
 }
 const Login=mongoose.model("Login",loginsSchema);
 
-const homeStartingContent = "Lacus vel facilisis volutpat est velit egestas dui id ornare. Semper auctor neque vitae tempus quam. Sit amet cursus sit amet dictum sit amet justo. Viverra tellus in hac habitasse. Imperdiet proin fermentum leo vel orci porta. Donec ultrices tincidunt arcu non sodales neque sodales ut. Mattis molestie a iaculis at erat pellentesque adipiscing. Magnis dis parturient montes nascetur ridiculus mus mauris vitae ultricies. Adipiscing elit ut aliquam purus sit amet luctus venenatis lectus. Ultrices vitae auctor eu augue ut lectus arcu bibendum at. Odio euismod lacinia at quis risus sed vulputate odio ut. Cursus mattis molestie a iaculis at erat pellentesque adipiscing.";
-const aboutContent = "Hac habitasse platea dictumst vestibulum rhoncus est pellentesque. Dictumst vestibulum rhoncus est pellentesque elit ullamcorper. Non diam phasellus vestibulum lorem sed. Platea dictumst quisque sagittis purus sit. Egestas sed sed risus pretium quam vulputate dignissim suspendisse. Mauris in aliquam sem fringilla. Semper risus in hendrerit gravida rutrum quisque non tellus orci. Amet massa vitae tortor condimentum lacinia quis vel eros. Enim ut tellus elementum sagittis vitae. Mauris ultrices eros in cursus turpis massa tincidunt dui.";
-const contactContent = "Scelerisque eleifend donec pretium vulputate sapien. Rhoncus urna neque viverra justo nec ultrices. Arcu dui vivamus arcu felis bibendum. Consectetur adipiscing elit duis tristique. Risus viverra adipiscing at in tellus integer feugiat. Sapien nec sagittis aliquam malesuada bibendum arcu vitae. Consequat interdum varius sit amet mattis. Iaculis nunc sed augue lacus. Interdum posuere lorem ipsum dolor sit amet consectetur adipiscing elit. Pulvinar elementum integer enim neque. Ultrices gravida dictum fusce ut placerat orci nulla. Mauris in aliquam sem fringilla ut morbi tincidunt. Tortor posuere ac ut consequat semper viverra nam libero.";
+const homeStartingContent = "Apple wants a weekend or expensive dui want to decorate. Which is always the creator nor the duration of her life. Carrots carrots just been running a lot. Product lived in this. Financing yeast rice vegetarian or clinical portal. That they are not members, nor members of the Donec ultrices tincidunt arcu. A lot of television targeted at the undergraduate nutrition. Of life, and the mountains shall be born, ultricies quis, congue in magnis dis parturient. Adipiscing elit ut aliquam purus sit amet luctus venenatis lectus. The founder of basketball and football propaganda graduated drink at the arc. Performance skirt smile at any hate for hate vulputate. Running a lot of television targeted at the undergraduate kids. "
+const aboutContent = "refinancing manufacturing CNN is beating. Dictumst manufacturing Textile for kids elit. There diameter boat manufacturing lorem yet. The street dictum everyone bows pure. Want yet, but the smile worth more than Vulputate soccer massage. Moors into a salad ecological . always smile at each Bureau does not relax clinical pregnant makeup. Currently mass of temperature or peanut sauce Westinghouse. for example, to earth element arrows of life. basketball largest peanut running into the ugly mass developers worth it.";
+const contactContent = "Thermal deductible until the price vulputate sapien. Rhoncus urna neque viverra justo nec ultrices. Inspections Ut et drink recipes. Minneapolis developer undergraduate homework et. Laughter pull undergraduate at iaculis in the region. Nor do some shooting movies malesuada bibendum sapien arcu vitae. Recipe sometimes varied mainstream real estate. But now targeted propaganda opportunities. Sometimes put lorem ipsum carrots undergraduate tomato soup. The cushion element of the whole, they shall neither. Basketball was pregnant dark to invest clinical zero. So that the disease in the aliquam sem mauris fringilla tincidunt. Set the temperature to photography always pull for free.";
 
 const app = express();
 
 app.set('view engine', 'ejs');
 app.set('views', './views');
-
-//app.set('view engine', 'jade');
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static("public"));
 app.get("/home",function(req,res){
@@ -71,6 +69,12 @@ app.get("/compose",function(req,res){
 });
 app.get("/",function(req,res){
   res.render("login");
+});
+app.get("/wpass",function(req,res){
+  res.render("wpass");
+});
+app.get("/singupf",function(req,res){
+  res.render("singupf");
 });
 app.get("/singup",function(req,res){
 res.render("singup");
@@ -145,18 +149,28 @@ app.post("/",function(req,res){
   password:pass
   });
   login.save();
+  //res.render("home",{"sing":log,startingContent:homeStartingContent})
   res.redirect("singup");
 });
 app.post("/singup",function(req,res){
   var sing=req.body.SId;
   var spass=req.body.Spassword;
-  Login.findOne({Id:sing,password:spass},function(err,result){
-    if(!err&&result)
-    {res.render("home",{"sing":sing,"startingContent": homeStartingContent,"posts":result.posts});}
+  Login.findOne({Id:sing},function(err,result){
+    if(!err)
+    { if(result)
+     {  if(result.password===spass)
+      res.render("home",{"sing":sing,"startingContent": homeStartingContent,"posts":result.posts});
+     else{ console.log("wrong password.");
+       res.redirect("wpass");
+     }
+   }
+   else {
+     console.log("sing up first.");
+      res.redirect("singupf")
+   }
+ }
 
-  else {
-  console.log("wrongpassword");
-  }
+
 });
 });
 let port=process.env.PORT;

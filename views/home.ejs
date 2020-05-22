@@ -17,9 +17,10 @@
 <% for(var i=0;i<posts.length;i++)
 { %>
 <h3> <%=posts[i].title %></h3>
-<p> <%=posts[i].content.substring(0,30)+"..." %><a href="/post/<%=posts[i].id %>">Read More</a></p>
+<p> <%=posts[i].content%></p>
 
 <%}%>
+<!--.substring(0,30)+"..." %><a href="/post/=posts[i].id %>">Read More</a>--->
 <form action="/delete" method="post">
   <input type ="hidden" name ="publish" value="<%=sing%>">
 <button class="btn btn-primary"  type="submit" name="publish1"  >Compose a new day</button>
